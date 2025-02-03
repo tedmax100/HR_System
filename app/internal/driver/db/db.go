@@ -9,7 +9,7 @@ import (
 	"github.com/XSAM/otelsql"
 	"github.com/hrdemo/internal/config"
 
-	_ "github.com/lib/pq"
+	//_ "github.com/lib/pq"
 	semconv "go.opentelemetry.io/otel/semconv/v1.27.0"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

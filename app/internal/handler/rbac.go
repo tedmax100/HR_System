@@ -1,4 +1,4 @@
-package api
+package handler
 
 import (
 	"github.com/casbin/casbin/v2"
@@ -12,13 +12,13 @@ type RbacEnforcer struct {
 }
 
 func NewRbacEnforcer(cfg *config.Config) (*RbacEnforcer, error) {
-	adapter, err := gormadapter.NewAdapter("postgres", cfg.DataBaseURL)
+	adapter, err := gormadapter.NewAdapter("postgres", cfg.DataBaseURL, "postgres", true)
 	if err != nil {
 		return nil, err
 	}
 
 	// load Casbin model and policy
-	enforcer, err := casbin.NewEnforcer("rbac_model.conf", adapter)
+	enforcer, err := casbin.NewEnforcer("configs/rbac_model.conf", adapter)
 	if err != nil {
 		return nil, err
 	}

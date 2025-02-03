@@ -4,20 +4,44 @@ import (
 	"context"
 	"os"
 	"os/signal"
-	"syscall" // 请替换为你的实际项目路径
+	"syscall"
 	"time"
 
 	"github.com/hrdemo/internal/config"
 	"github.com/hrdemo/internal/driver/db"
+	"github.com/hrdemo/internal/handler"
 	_ "github.com/lib/pq"
 	"go.uber.org/fx"
 )
 
-func main() {
+var (
+	Name       = "HR_System"
+	GoVersiuon = "111"
+	GitCommit  = "aaa"
+	BuildDate  = "1235"
+)
 
+func main() {
 	app := fx.New(
+		fx.Provide(fx.Annotated{
+			Name:   "service_name",
+			Target: func() string { return Name },
+		}),
+		fx.Provide(fx.Annotated{
+			Name:   "version",
+			Target: func() string { return GitCommit },
+		}),
+		fx.Provide(fx.Annotated{
+			Name:   "build_date",
+			Target: func() string { return BuildDate },
+		}),
+		fx.Provide(fx.Annotated{
+			Name:   "go_version",
+			Target: func() string { return GoVersiuon },
+		}),
 		config.Module,
 		db.Module,
+		handler.Module,
 	)
 	baseCtx := context.Background()
 	startCtx, cancel := context.WithTimeout(baseCtx, 1*time.Minute)
