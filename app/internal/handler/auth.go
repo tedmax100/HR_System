@@ -84,7 +84,6 @@ func (s *Server) authMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// 將用戶信息存儲到上下文中
 		c.Set("employee_id", claims.EmployeeID)
 		c.Set("roles", claims.Roles)
 

@@ -9,12 +9,12 @@ func (s *Server) initRoutes() {
 	authGroup.POST("/login", s.login)
 	authGroup.GET("/me", s.authMiddleware(), s.getCurrentUser)
 
-	attendanceGroup := v1Group.Group("/attendance", s.rbacEnforcer.Middleware())
-	attendanceGroup.GET("/:employ_id")
-	attendanceGroup.GET("/:employ_id/:date")
-	attendanceGroup.POST("/:employ_id")
+	attendanceGroup := v1Group.Group("/attendance", s.authMiddleware())
+	attendanceGroup.GET("/:employ_id", s.rbacEnforcer.Middleware())
+	attendanceGroup.GET("/:employ_id/:date", s.rbacEnforcer.Middleware())
+	attendanceGroup.POST("/:employ_id", s.recordAttendance)
 
-	leaveGroup := v1Group.Group("/leave", s.rbacEnforcer.Middleware())
+	leaveGroup := v1Group.Group("/leave", s.authMiddleware(), s.rbacEnforcer.Middleware())
 	leaveGroup.GET("/:employ_id")
 	leaveGroup.POST("/:employ_id")
 	leaveGroup.PUT("/:leave_id/approve")

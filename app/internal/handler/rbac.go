@@ -36,7 +36,8 @@ func NewRbacEnforcer(cfg *config.Config) (*RbacEnforcer, error) {
 
 func (r *RbacEnforcer) Middleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		sub := c.GetHeader("user-role")
+		sub := c.GetString("roles")
+		// sub := c.GetHeader("user-role")
 		obj := c.Request.URL.Path
 		act := c.Request.Method
 
